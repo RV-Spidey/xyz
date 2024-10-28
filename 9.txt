@@ -1,0 +1,137 @@
+#include<stdio.h>
+int rear=-1,front=-1,a[20],size;
+void inject()
+{
+	int i,n;
+        if(front==0 && rear==size-1)
+        {
+                printf("stack is full");
+		return;
+        }
+	printf("enter the number:");
+	scanf("%d",&n);
+        if(rear==-1 && front==-1)
+        {
+                rear=0;
+                front=0;
+                a[rear]=n;
+        }
+	else  if (front!=0 && rear==size-1)
+	{
+		for(i=front;i<=size-1;i++)
+		{
+			a[i-1]=a[i];
+		}
+		a[rear]=n;
+		front--;
+	}	
+	
+        else
+        {
+                a[++rear]=n;
+        }
+}
+void eject()
+{
+        if(rear==-1 && front==-1 )
+        {
+                printf("que is empty");
+        }
+        else
+        {
+                printf("deleted element is %d",a[front++]);
+        }
+}
+void push()
+{
+	int n;
+        if(rear==size-1 && front==0)
+        {
+                printf("stack is full");
+		return;
+        }
+        else if(front==0)
+        {	
+		int i;
+		printf("enter a no:");
+		scanf("%d",&n);
+                //printf("no space to push element to front side");
+		for(i=rear;i>=front;i--)
+		{
+			//printf("%d:%d",i,a[i]);
+			a[i+1]=a[i];
+		}
+		a[front]=n;
+		rear++;
+		return;
+        }
+	printf("enter a no:");
+	scanf("%d",&n);
+	if(front==-1)
+	{
+		front=0;
+		a[++rear]=n;
+		return;
+	}
+        a[--front]=n;
+        
+}
+
+void pop()
+{
+        if(rear==-1 && front==-1 )
+        {
+                printf("que is empty");
+        }
+        else
+        {
+                printf("deleted element is %d",a[rear--]);
+        }
+}              
+void display()
+{
+        int i;
+        if(rear==-1 && front==-1 )
+        {
+                printf("queue is empty");
+        }
+        else if(rear==size-1)
+        {
+                printf("queue is full\n");
+        }
+        printf("queue:");
+        for(i=front;i<=rear;i++)
+        {
+                printf("%d",a[i]);
+        }
+}
+void main()
+{
+        int ch;
+        printf("enter the size of queue");
+        scanf("%d",&size);
+        printf("\n1.inject\n2.eject\n3.push\n4.pop\n5.display\n6.exit");
+        do{
+        printf("\nenter the choice");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+                case 1:
+                inject();
+                break;
+                case 2:eject();
+                break;
+                case 3:push();
+                break;
+		case 4:pop();
+		break;
+                case 5:display();
+		break;
+		case 6:break;
+                default:printf("invalid choice");
+        }
+        }while(ch!=6);
+}
+ 
+
+
