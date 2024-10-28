@@ -1,0 +1,119 @@
+#include<stdio.h>
+struct pque{
+	int i;
+	int p;
+}a[10];
+int rear=-1,front=-1,size,loc;
+void enqueue(int item,int priority)
+{
+	if(front=0 && rear==size-1)
+	{
+		printf("pqueue is full");
+	}
+	else if(front==-1)
+	{
+		rear=0;
+		front=0;
+		a[rear].i=item;
+		a[rear].p=priority;
+		//printf("\n%d",a[0].item);
+	}
+	else
+	{	int i;
+		if(rear==size-1)
+		{
+			for(i=front;i<=rear;i++) 
+				a[i-1]=a[i];
+			rear--;
+			front--;
+			for(i=rear;i>=front;i--)
+			{
+				if(a[i].p<priority)
+					break;
+			}
+			loc=i+1;
+			for(i=rear;i>=loc;i--)
+			{
+				a[i+1]=a[i];
+			}
+			a[loc].i=item;
+			a[loc].p=priority;
+			rear++;
+		}
+		else
+		{
+			for(i=rear;i>=front;i--)
+                        {
+                                if(a[i].p<priority)
+                                        break;
+                        }
+                        loc=i+1;
+                        for(i=rear;i>=loc;i--)
+                        {
+                                a[i+1]=a[i];
+                        }
+                        a[loc].i=item;
+                        a[loc].p=priority;
+                        rear++;
+		}
+	}
+}
+void dequeue()
+{
+	if(rear==-1 && front==-1)
+		printf("que is empty");
+        else if(front==rear)
+	{
+		printf("deleted element is:%d\n",a[front++].i);
+		rear=-1;
+		front=-1;	}
+	else
+	{
+		printf("deleted element is:%d\n",a[front++].i);
+	}
+
+}
+void display()
+{
+	int i;
+        if(rear==-1 && front==-1)
+                printf("queue is empty");
+        else
+        {
+        	printf("Queue elements");
+                for(i=front;i<=rear;i++)
+                {
+                        printf("%d\n",a[i].i);
+                }
+        }
+
+}
+
+int main()
+{
+	int item1,priority1,ch;
+	printf("enter the size of queue");
+	scanf("%d",&size);
+	//printf("1.enqueue\n2.dequeue\n3.dispay\n4.exit");
+	
+	do
+	{
+		printf("1.enqueue\n2.dequeue\n3.dispay\n4.exit");
+		printf("enter a choice");
+       		scanf("%d",&ch);
+		switch(ch)
+		{
+			case 1:printf("enter a no and its priority");
+			scanf("%d%d",&item1,&priority1);
+			enqueue(item1,priority1);
+			break;
+			case 2:dequeue();
+			break;
+			case 3:display();
+			break;
+			case 4:break;
+			default:printf("invalid choice");
+		}
+	}while(ch!=4);
+}
+
