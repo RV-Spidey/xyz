@@ -1,0 +1,73 @@
+#include <stdio.h>
+struct poly
+{
+ int coeff;
+ int deg;
+}p1[10],p2[10],s[10];
+
+int main()
+{
+ int n1,n2,i,j=0,k=0;
+ printf("Enter the number of terms of 1st polynomial:");
+ scanf("%d",&n1);
+ printf("Enter the coefficient and degree of 1st polynomial in descending oreder:");
+ for(i=0;i<n1;i++)
+ {
+  scanf("%d",&p1[i].coeff);
+  scanf("%d",&p1[i].deg);
+ }
+ printf("Enter the number of terms of 2nd polynomial:");
+ scanf("%d",&n2);
+ printf("Enter the coefficient and degree of 2nd polynomial in descending oreder:");
+ for(i=0;i<n2;i++)
+ {
+  scanf("%d",&p2[i].coeff);
+  scanf("%d",&p2[i].deg);
+ }
+ i=0;
+ while(i<n1 && j<n2)
+ {
+  if(p1[i].deg==p2[j].deg)
+  {
+   s[k].coeff = p1[i].coeff + p2[j].coeff;
+   s[k].deg = p1[i].deg;
+   i++;
+   j++;
+   k++;
+  }
+  else if(p1[i].deg > p2[j].deg)
+  {
+   s[k].coeff = p1[i].coeff;
+   s[k].deg = p1[i].deg;
+   i++;
+   k++;
+  }
+ else
+  {
+   s[k].coeff = p2[j].coeff;
+   s[k].deg = p2[j].deg;
+   j++;
+   k++;
+  }
+ }
+ while(i<n1)
+ {
+   s[k].coeff = p1[i].coeff;
+   s[k].deg = p1[i].deg;
+   i++;
+   k++;
+ }
+ while(j<n2)
+ {
+  s[k].coeff = p2[j].coeff;
+   s[k].deg = p2[j].deg;
+   j++;
+   k++;
+ }
+ for(i=0;i<k;i++)
+ {
+  printf("%dx^%d",s[i].coeff,s[i].deg);
+ if(i<k-1)
+  printf(" + ");
+ }
+}
