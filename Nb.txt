@@ -1,0 +1,173 @@
+import java.util.*;
+class Bankaccount
+{
+        long acc;
+        float amt,bal;
+        String name;
+        Scanner s=new Scanner(System.in);
+        public void read()
+        {
+                System.out.println("enter account no:");
+                acc=s.nextLong();
+                System.out.println("enter name of account holder:");
+                name=s.next();
+                System.out.println("enter the balance:");
+                bal=s.nextFloat();
+        }
+        public void deposit()
+        {
+                System.out.println("Enter the amount to deposit");
+                amt=s.nextFloat();
+                bal=bal+amt;
+                //System.out.println("balance:"+bal);
+        }
+        public void withdraw()
+        {
+                System.out.println("enter the amount to withdraw:");
+                amt=s.nextFloat();
+                if(bal<amt)
+                        System.out.println("insufficient balance");
+                else
+                        bal=bal-amt;
+                        System.out.println("balance:"+bal);
+        }
+        public void balance()
+        {
+                System.out.println("balance:"+bal);
+        }
+        public void display()
+        {
+                System.out.println("name:"+name);
+                System.out.println("Account:"+acc);
+                System.out.println("bal:"+bal);
+        }
+}
+class Savings extends Bankaccount
+{
+        float interest;
+        int years;
+        Scanner s1=new Scanner(System.in);
+        public void inte()
+        {
+                System.out.println("enter interest");
+                interest=s1.nextFloat();
+                System.out.println("enter years");
+                years=s1.nextInt();
+                bal=bal+(bal*years*(interest/100));
+                balance();
+        }
+
+}
+class Nbank
+{
+        public static void main(String []args)
+        {	
+		int i,n;
+                Savings b[] = new Savings[20];
+                int ch;
+                long acc;
+		System.out.println("enter no accounts:");
+		Scanner sc=new Scanner(System.in);
+		n=sc.nextInt();
+		for(i=0;i<n;i++)
+                {
+			b[i]=new Savings();
+			b[i].read();
+		}
+                do
+                {
+                        System.out.println("1.deposit\n2.withdraw\n3.balance\n4.display\n5.interest\n6.exit");
+                        System.out.println("\nenter a choice");
+                        ch=sc.nextInt();
+                        switch(ch)
+                        {
+                                case 1:
+                                        System.out.println("enter the account no:");
+                                        acc=sc.nextLong();
+					for(i=0;i<n;i++)
+					{
+                                        	if(acc==b[i].acc)
+                                                {
+							b[i].deposit();
+							break;
+						}
+					}
+					if(i==n)
+					{
+						System.out.println("invalid account");
+					}
+                                        break;
+				 case 2:
+                                        System.out.println("enter the account no:");
+                                        acc=sc.nextLong();
+                                        for(i=0;i<n;i++)
+                                        {
+                                                if(acc==b[i].acc)
+                                                {
+						        b[i].withdraw();
+                                               		break;
+						}
+                                        }
+					if(i==n)
+                                        {
+                                                System.out.println("invalid account");
+                                        }
+
+					break;
+                                case 3:
+                                        System.out.println("enter the account no:");
+                                        acc=sc.nextLong();
+					for(i=0;i<n;i++)
+					{
+                                        	if(acc==b[i].acc)
+                                                {
+							b[i].balance();
+							break;
+						}
+					}
+					if(i==n)
+                                        {
+                                                System.out.println("invalid account");
+                                        }
+
+                                        break;
+                                case 4:
+                                        System.out.println("enter the account no:");
+                                        acc=sc.nextLong();
+					for(i=0;i<n;i++)
+					{
+                                        	if(acc==b[i].acc)
+                                                {
+							b[i].display();
+							break;
+						}
+                                        }
+					if(i==n)
+                                        {
+                                                System.out.println("invalid account");
+                                        }
+
+					break;
+                                case 5:
+                                        System.out.println("enter the account no:");
+                                        acc=sc.nextLong();
+					for(i=0;i<n;i++)
+					{
+                                        	if(acc==b[i].acc)
+                                          	{
+							b[i].inte();
+							break;
+						}
+                                        }
+					if(i==n)
+                                        {
+                                                System.out.println("invalid account");
+                                        }
+					break;
+                                case 6:break;
+                                default:System.out.println("invalid choice");
+                        }
+                }while(ch!=6);
+        }       
+}
+
