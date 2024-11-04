@@ -39,7 +39,7 @@ void eject()
         }
         else
         {
-                printf("deleted element is %d",a[front++]);
+                printf("deleted element is %d",a[rear--]);
         }
 }
 void push()
@@ -85,7 +85,7 @@ void pop()
         }
         else
         {
-                printf("deleted element is %d",a[rear--]);
+                printf("deleted element is %d",a[front++]);
         }
 }              
 void display()
