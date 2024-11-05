@@ -1,138 +1,228 @@
-
 #include<stdio.h>
-int rear=-1,front=-1,a[20],size;
-void inject()
+#include<stdlib.h>
+struct node{
+	int data;
+	struct node* link;
+};
+struct node* head=NULL;
+void createList()
 {
-	int i,n;
-        if(front==0 && rear==size-1)
-        {
-                printf("stack is full");
-		return;
-        }
-	printf("enter the number:");
-	scanf("%d",&n);
-        if(rear==-1 && front==-1)
-        {
-                rear=0;
-                front=0;
-                a[rear]=n;
-        }
-	else  if (front!=0 && rear==size-1)
+	int n,i;
+	if(head==NULL)
 	{
-		for(i=front;i<=size-1;i++)
-		{
-			a[i-1]=a[i];
-		}
-		a[rear]=n;
-		front--;
-	}	
-	
-        else
-        {
-                a[++rear]=n;
-        }
-}
-void eject()
-{
-        if(rear==-1 && front==-1 )
-        {
-                printf("que is empty");
-        }
-        else
-        {
-                printf("deleted element is %d",a[front++]);
-        }
-}
-void push()
-{
-	int n;
-        if(rear==size-1 && front==0)
-        {
-                printf("stack is full");
-		return;
-        }
-        else if(front==0)
-        {	
-		int i;
-		printf("enter a no:");
+		printf("enter the no of nodes");
 		scanf("%d",&n);
-                //printf("no space to push element to front side");
-		for(i=rear;i>=front;i--)
+		if(n!=0)
 		{
-			//printf("%d:%d",i,a[i]);
-			a[i+1]=a[i];
+			int data;
+			struct node *newnode,*ptr;
+			newnode=(struct node*)malloc(sizeof(struct node*));
+			printf("\nEnter number to be inserted");
+			scanf("%d",&data);
+			newnode->data=data;
+			newnode->link=NULL;
+			head=newnode;
+			ptr=head;
+			for(i=2;i<=n;i++)
+			{
+			
+				newnode=(struct node*)malloc(sizeof(struct node*));
+				ptr->link=newnode;
+                		printf("\nEnter number to be inserted");
+                		scanf("%d",&data);
+                		newnode->data=data;
+                		newnode->link=NULL;
+				ptr=ptr->link;
+			}
+			printf("\n The list is created");
 		}
-		a[front]=n;
-		rear++;
-		return;
-        }
-	printf("enter a no:");
-	scanf("%d",&n);
-	if(front==-1)
-	{
-		front=0;
-		a[++rear]=n;
-		return;
+		else
+			printf("the list is already created");
 	}
-        a[--front]=n;
-        
 }
-
-void pop()
-{
-        if(rear==-1 && front==-1 )
-        {
-                printf("que is empty");
-        }
-        else
-        {
-                printf("deleted element is %d",a[rear--]);
-        }
-}              
 void display()
 {
-        int i;
-        if(rear==-1 && front==-1 )
-        {
-                printf("queue is empty");
-        }
-        else if(rear==size-1)
-        {
-                printf("queue is full\n");
-        }
-        printf("queue:");
-        for(i=front;i<=rear;i++)
-        {
-                printf("%d",a[i]);
-        }
+	struct node* ptr;
+	if(head==NULL)
+		printf("\nList is empty\n");
+	else
+	{
+		ptr=head;
+		while(ptr!=NULL)
+		{
+			printf("Data=%d\n",ptr->data);
+			ptr=ptr->link;
+		}
+	}
 }
-void main()
+void insertFront()
+{	
+	int data;
+	struct node* newnode;
+	newnode=(struct node*)malloc(sizeof(struct node*));
+        printf("\nEnter number to be inserted");
+        scanf("%d",&data);
+        newnode->data=data;
+        newnode->link=head;
+	head=newnode;
+}
+void insertEnd()
 {
-        int ch;
-        printf("enter the size of queue");
-        scanf("%d",&size);
-        printf("\n1.inject\n2.eject\n3.push\n4.pop\n5.display\n6.exit");
-        do{
-        printf("\nenter the choice");
-        scanf("%d",&ch);
-        switch(ch)
-        {
-                case 1:
-                inject();
-                break;
-                case 2:eject();
-                break;
-                case 3:push();
-                break;
-		case 4:pop();
-		break;
-                case 5:display();
-		break;
-		case 6:break;
-                default:printf("invalid choice");
-        }
-        }while(ch!=6);
+	int data;
+        struct node *newnode,*ptr;
+        newnode=(struct node*)malloc(sizeof(struct node*));
+        printf("\nEnter number to be inserted");
+        scanf("%d",&data);
+        newnode->data=data;
+        newnode->link=NULL;
+      	ptr=head;
+	while(ptr->link!=NULL)
+	{
+		ptr=ptr->link;
+	}
+	ptr->link=newnode;
 }
- 
+void insertAtposition()
+{
+	int key,data;
+	struct node* ptr;
+	printf("\nafter which element data to be inserted:");
+	scanf("%d",&key);
+	printf("\nEnter no to be inserted:");
+	scanf("%d",&data);
+	if(head==NULL)
+		printf("list is empty search not possible");
+	else
+	{
+		ptr=head;
+		while(ptr->data!=key && ptr->link!=NULL)
+		{
+			ptr=ptr->link;
+		}
+		if(ptr->data!=key)
+			printf("key not present");
+		else
+		{
+			struct node *newnode;
+			newnode=(struct node*)malloc(sizeof(struct node*));
+        		newnode->data=data;
+      			newnode->link=ptr->link;
+			ptr->link=newnode;
+		}
+	}
+}
+void deleteFront()
+{
+	struct node *temp;
+	if(head==NULL)
+		printf("List is  empty");
+	else
+	{
+		temp=head;
+		head=head->link;
+		free(temp);
+	}
+}
+void deleteEnd()
+{
+	struct node *ptr,*prevnode;
+	if(head==NULL)
+		printf("list already empty");
+	else if(head->link==NULL)
+	{
+		free(head);
+		head=NULL;
+	}
+	else
+	{
+		ptr=head;
+		while(ptr->link!=NULL)
+		{
+			prevnode=ptr;
+			ptr=ptr->link;
+		}
+		free(ptr);
+		prevnode->link=NULL;
+	}
+}
+void deleteAtposition()
+{
+	struct node *temp,*currnode,*prevnode;
+	int key;
+	printf("Enter the element to be deleted");
+	scanf("%d",&key);
+	if(head==NULL)
+		printf("list is already empty");
+	else if(head->data==key)
+	{
+		temp=head;
+		head=head->link;
+		free(temp);
+	}
+	else
+	{
+		prevnode=head;
+		currnode=head;
+		while(currnode->data!=key && currnode->link!=NULL)
+		{
+			prevnode=currnode;
+			currnode=currnode->link;
+		}
+		if(currnode->data!=key)
+		{
+			printf("element not found in list");
+		}
+		else
+		{
+			prevnode->link=currnode->link;
+		}
+	}
+}
+int main()
+{
+	createList();
+	int ch;
+	while(1)
+	{
+		printf("\n\t1.To see the list\n");
+		printf("\t2.To insert at front\n");
+		printf("\t3.To insert at last\n");
+		printf("\t4.To insert at a positon\n");
+		printf("\t5.To delete front\n");
+		printf("\t6.To delete last\n");
+		printf("\t7.To delete element at a position\n");
+		printf("\t8.To exit\n");
+		printf("enter a choice\n ");
+		scanf("%d",&ch);
+		switch(ch)
+		{
+			case 1:display();
+			break;
+			case 2:insertFront();
+			break;
+			case 3:insertEnd();
+			break;
+			case 4:insertAtposition();
+			break;
+			case 5:deleteFront();
+			break;
+			case 6:deleteEnd();
+			break;
+			case 7:deleteAtposition();
+			break;
+			case 8:
+				exit(1);
+			        break;
+		}
+	}
+}
+
+
+
+
+
+
+
+
 
 
