@@ -1,0 +1,248 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct poly{
+	int coeff;
+	int expo;
+	struct poly *link;
+};
+struct poly *Phead=NULL,*Qhead=NULL,*Rhead=NULL;
+void createPoly()
+{
+	if(Phead==NULL && Qhead==NULL)
+	{
+		int n,m,i;
+		printf("enter the no of terms in first polynomial:");
+		scanf("%d",&n);
+		if(n!=0)
+		{
+			struct poly *p,*newnode;
+			int coeff,expo;
+			newnode=(struct poly*)malloc(sizeof(struct poly));
+			printf("enter the coeff and corresponding expo in descending order:");
+			scanf("%d%d",&coeff,&expo);
+			newnode->coeff=coeff;
+			newnode->expo=expo;
+			newnode->link=NULL;
+			Phead=newnode;
+			p=newnode;
+			for(i=2;i<=n;i++)
+			{
+				newnode=(struct poly*)malloc(sizeof(struct poly));
+				printf("enter the coeff and corresponding expo in descending order:");
+				scanf("%d%d",&coeff,&expo);
+				newnode->coeff=coeff;
+				newnode->expo=expo;
+				newnode->link=NULL;
+				p->link=newnode;
+				p=p->link;
+			}
+		}
+		printf("enter the no of terms in 2nd polynomial:");
+		scanf("%d",&m);
+		if(m!=0)
+		{
+			struct poly* p,*newnode;
+			int coeff,expo;
+			newnode=(struct poly*)malloc(sizeof(struct poly));
+			printf("enter the coeff and corresponding expo in descending order:");
+			scanf("%d%d",&coeff,&expo);
+			newnode->coeff=coeff;
+			newnode->expo=expo;
+			newnode->link=NULL;
+			p=newnode;
+			Qhead=newnode;
+			for(i=2;i<=m;i++)
+			{
+				newnode=(struct poly*)malloc(sizeof(struct poly));
+				printf("enter the coeff and corresponding expo in descending order:");
+				scanf("%d%d",&coeff,&expo);
+				newnode->coeff=coeff;
+				newnode->expo=expo;
+				newnode->link=NULL;
+				p->link=newnode;
+				p=p->link;
+			}
+		}
+	}
+}
+void polyAdd()
+{
+	struct poly *p,*q,*r;
+	p=Phead;
+	q=Qhead;
+	Rhead=r=NULL;
+	while(p!=NULL && q!=NULL)
+	{
+		struct poly *newnode;
+		newnode=(struct poly*)malloc(sizeof(struct poly));
+		if(p->expo==q->expo)
+		{
+			newnode->coeff=p->coeff+q->coeff;
+			newnode->expo=p->expo;
+			newnode->link=NULL;
+			p=p->link;
+			q=q->link;
+		}
+		else if(p->expo > q->expo)
+		{
+			newnode->coeff=p->coeff;
+			newnode->expo=p->expo;
+			newnode->link=NULL;
+			p=p->link;
+		}
+		else
+		{
+			newnode->coeff=q->coeff;
+			newnode->expo=p->expo;
+			newnode->link=NULL;
+			q=q->link;
+		}
+		if(Rhead==NULL)
+		{
+			Rhead=r=newnode;
+		}
+		else
+		{
+			r->link=newnode;
+			r=r->link;
+		}
+	}
+	while(p!=NULL)
+	{
+		struct poly *newnode;
+		newnode=(struct poly*)malloc(sizeof(struct poly));
+		newnode->coeff=p->coeff;
+		newnode->expo=p->expo;
+		newnode->link=NULL;
+		if(Rhead==NULL)
+			Rhead=r=newnode;
+		else
+		{
+			r->link=newnode;
+			r=r->link;
+		}
+		p=p->link;
+	}
+	while(q!=NULL)
+	{
+		struct poly *newnode;
+		newnode=(struct poly*)malloc(sizeof(struct poly));
+		newnode->coeff=q->coeff;
+		newnode->expo=q->expo;
+		newnode->link=NULL;
+		if(Rhead==NULL)
+			Rhead=r=newnode;
+		else
+		{
+			r->link=newnode;
+			r=r->link;
+		}
+		q=q->link;
+	}
+	
+}
+void polyMulty()
+{
+	struct poly *p,*q,*r,*prev;
+	p=Phead;
+	q=Qhead;
+	Rhead=r=NULL;
+	while(p!=NULL)
+	{
+		while(q!=NULL)
+		{
+			struct poly *newnode;
+			newnode=(struct poly*)malloc(sizeof(struct poly));
+			newnode->coeff=p->coeff*q->coeff;
+			newnode->expo=p->expo+q->expo;
+			newnode->link=NULL;
+			if(Rhead==NULL)
+				Rhead=r=newnode;
+			else
+			{
+				r->link=newnode;
+				r=r->link;
+			}
+			q=q->link;
+		}
+		q=Qhead;
+		p=p->link;
+	}
+	p=Rhead;
+	while(p!=NULL)
+	{
+		q=p->link;
+		prev=p;
+		while(q!=NULL)
+		{
+			if(p->expo==q->expo)
+			{
+				p->coeff=p->coeff+q->coeff;
+				prev->link=q->link;
+				free(q);
+				q=prev->link;
+			}
+			else
+			{
+				q=q->link;
+			}
+		}
+		p=p->link;
+	}
+}	
+			
+void display()
+{
+	int zero;
+	struct poly *ptr;
+	ptr=Rhead;
+	while(ptr!=NULL)
+	{
+		if(ptr->expo==0)
+		{
+			printf("%d",ptr->coeff);
+			zero=1;
+			break;
+		}
+		printf("%dx%d+",ptr->coeff,ptr->expo);
+		ptr=ptr->link;
+	}
+	if(zero==0)
+		printf("%d",0);
+}
+int main()
+{
+	createPoly();
+	int choice;
+	while (1) {
+
+		printf("\n\t1.Addition\n");
+		printf("\n\t2.Multiplication\n");
+		printf("\n\t3.display\n");
+		printf("\tenter the choice");
+		scanf("%d", &choice);
+		switch (choice) {
+		case 1:
+			polyAdd();
+			printf("\npolynomials are added\n");
+			break;
+		case 2:
+			polyMulty();
+			printf("\npolynomials are multiplied\n");
+			break;
+		case 3:
+			display();
+			break;
+		case 4:
+			exit(0);
+		default:
+			printf("\nIncorrect Choice\n");
+		}
+	}
+}
+
+
+			
+			
+			
+	
