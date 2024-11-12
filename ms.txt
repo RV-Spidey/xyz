@@ -1,0 +1,58 @@
+#include<stdio.h>
+void merge(int a[],int low,int mid,int high)
+{
+	int temp[50];
+	int left =low;
+	int right=mid+1;
+	int k=0,i;
+	while(left<=mid && right <=high)
+	{
+		if(a[left]<=a[right])
+		{
+			temp[k++]=a[left++];
+		}
+		else
+		{
+			temp[k++]=a[right++];
+		}
+	}
+	while(left<=mid)
+	{
+		temp[k++]=a[left++];
+	}
+	while(right<=high)
+	{
+		temp[k++]=a[right++];
+	}
+	for(i=low;i<=high;i++)
+	{
+		a[i]=temp[i-low];
+	}
+}
+void mergesort(int a[],int low,int high)
+{
+	if(low<high)
+	{
+		int mid=(low+high)/2;
+		mergesort(a,low,mid);
+		mergesort(a,mid+1,high);
+		merge(a,low,mid,high);
+	}
+}
+int main()
+{
+	int a[20],n,i;
+	printf("enter the size");
+	scanf("%d",&n);
+	printf("enter the elemnets");
+	for(i=0;i<n;i++)
+	{
+		scanf("%d",&a[i]);
+	}
+	mergesort(a,0,n-1);
+	for(i=0;i<n;i++)
+	{
+		printf("%d",a[i]);
+	}
+}
+	
